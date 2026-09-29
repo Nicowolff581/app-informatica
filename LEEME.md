@@ -35,7 +35,7 @@ No hace falta saber programar: todo son archivos de texto (.md) que se leen como
 Tiempo total: **120 minutos**. Deja 5–10 minutos para `redemittel/07-kontrollliste.md`.
 
 Orden de los archivos de Redemittel:
-`01-einleitung` · `02-textwiedergabe` · `03-diagrammauswertung` · `04a-stellungnahme-dialektisch` · `04b-stellungnahme-linear` · `05-schluss` · `06-ueberleitungen` · `07-kontrollliste`
+`00-geruest-fuer-die-pruefung` ⭐ · `01-einleitung` · `02-textwiedergabe` · `03-diagrammauswertung` · `04a-stellungnahme-dialektisch` · `04b-stellungnahme-linear` · `05-schluss` · `06-ueberleitungen` · `07-kontrollliste`
 
 ---
 
