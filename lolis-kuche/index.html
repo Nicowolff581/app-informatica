@@ -110,6 +110,7 @@
     <symbol id="home-icon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M3 11 12 3l9 8M5 9.5V21h5v-6h4v6h5V9.5"/></symbol>
     <symbol id="list-icon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
     <symbol id="chat-icon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 5h16v11H9l-5 4V5z"/></symbol>
+    <symbol id="help-icon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.3a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.2-2.5 3.8"/></g><circle cx="12" cy="17.2" r="1.2" fill="currentColor"/></symbol>
     <symbol id="pin-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></symbol>
   </svg>
 
@@ -126,7 +127,7 @@
         <a href="#preguntas">Preguntas</a>
         <a href="#contacto">Contacto</a>
       </nav>
-      <a href="#menu" class="btn btn--cta" id="navCta" data-order-link>
+      <a href="#menu" class="btn btn--cta" id="navCta" data-order-link data-section="pedidos">
         <svg aria-hidden="true"><use href="#cart-icon"/></svg>
         <span>Pedir<span class="cta-extra"> ahora</span></span>
         <span class="cta-count" id="ctaCount" hidden>0</span>
@@ -499,6 +500,7 @@
     <a href="#inicio" data-section="inicio"><svg aria-hidden="true"><use href="#home-icon"/></svg>Inicio</a>
     <a href="#menu" data-section="menu"><svg aria-hidden="true"><use href="#list-icon"/></svg>Menú</a>
     <a href="#menu" data-section="pedidos" data-order-link class="tabbar__cta" id="tabCta"><span class="tabbar__icon"><svg aria-hidden="true"><use href="#cart-icon"/></svg><span class="tabbar__badge" id="tabCount" hidden>0</span></span>Mi pedido</a>
+    <a href="#preguntas" data-section="preguntas"><svg aria-hidden="true"><use href="#help-icon"/></svg>Preguntas</a>
     <a href="#contacto" data-section="contacto"><svg aria-hidden="true"><use href="#chat-icon"/></svg>Contacto</a>
   </nav>
 

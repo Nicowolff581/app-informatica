@@ -25,45 +25,75 @@ const SECTION_NAMES = {
   preguntas: "Preguntas",
   contacto: "Contacto",
 };
-// En la barra inferior, Historia cuenta como Inicio y Preguntas como Contacto
-const TAB_FOR = { "nuestra-historia": "inicio", preguntas: "contacto" };
 const whereLabel = document.getElementById("whereLabel");
-const navLinks = [...document.querySelectorAll("#navMenu a, .tabbar a")];
+const navLinks = [...document.querySelectorAll("#navMenu a, .tabbar a, #navCta")];
+const topbarEl = document.getElementById("top");
+const sections = Object.keys(SECTION_NAMES).map((id) => document.getElementById(id));
 
 function setCurrent(id) {
   whereLabel.textContent = SECTION_NAMES[id];
-  const tab = TAB_FOR[id] || id;
   navLinks.forEach((a) => {
     const target = a.dataset.section || a.getAttribute("href").slice(1);
-    const on = a.closest(".tabbar") ? target === tab : target === id;
-    if (on) a.setAttribute("aria-current", "true");
+    if (target === id) a.setAttribute("aria-current", "true");
     else a.removeAttribute("aria-current");
   });
 }
 
-const sections = Object.keys(SECTION_NAMES).map((id) => document.getElementById(id));
-if ("IntersectionObserver" in window) {
-  // La sección que ocupa el centro de la pantalla es la actual
-  const spy = new IntersectionObserver((entries) => {
-    entries.forEach((e) => { if (e.isIntersecting) setCurrent(e.target.id); });
-  }, { rootMargin: "-45% 0px -50% 0px" });
-  sections.forEach((sec) => spy.observe(sec));
+// La sección actual es la última cuyo comienzo ya llegó al tercio de arriba de la pantalla.
+// Al llegar al final de la página cuenta la última sección que se ve.
+function sectionInView() {
+  const line = Math.max(topbarEl.offsetHeight + 40, window.innerHeight * 0.35);
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+  let current = sections[0].id;
+  for (const sec of sections) {
+    const top = sec.getBoundingClientRect().top;
+    if (top <= line || (atBottom && top < window.innerHeight * 0.6)) current = sec.id;
+  }
+  return current;
 }
-setCurrent("inicio");
 
-// Al tocar un enlace interno, la sección de destino se ilumina un momento
-document.querySelectorAll('a[href^="#"]').forEach((a) => {
-  a.addEventListener("click", () => {
-    const target = document.getElementById(a.getAttribute("href").slice(1));
-    if (!target) return;
-    const head = target.querySelector(".section__head") || target;
-    setTimeout(() => {
-      head.classList.remove("is-arrived");
-      void head.offsetWidth;
-      head.classList.add("is-arrived");
-    }, 450);
+// Al tocar un enlace, la sección elegida queda marcada aunque la página no pueda
+// bajar hasta ponerla arriba (pasa con las últimas secciones). Se suelta cuando la
+// persona vuelve a mover la página con el dedo, la rueda o el teclado.
+let chosen = null;
+const release = () => { chosen = null; };
+["wheel", "touchmove", "keydown", "pointerdown"].forEach((ev) => window.addEventListener(ev, release, { passive: true }));
+
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    ticking = false;
+    // Si la sección elegida ya no se ve, vuelve a mandar la posición real
+    if (chosen) {
+      const r = document.getElementById(chosen).getBoundingClientRect();
+      if (r.bottom < topbarEl.offsetHeight || r.top > window.innerHeight) release();
+    }
+    setCurrent(chosen || sectionInView());
   });
+}, { passive: true });
+
+// Al tocar un enlace interno: marcar la sección de destino y hacer que se ilumine
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const target = document.getElementById(a.getAttribute("href").slice(1));
+  if (!target) return;
+  const sec = target.closest("section");
+  if (sec && SECTION_NAMES[sec.id]) {
+    chosen = sec.id;
+    setCurrent(sec.id);
+  }
+  const head = (sec && sec.querySelector(".section__head")) || target;
+  setTimeout(() => {
+    head.classList.remove("is-arrived");
+    void head.offsetWidth;
+    head.classList.add("is-arrived");
+  }, 450);
 });
+
+setCurrent(sectionInView());
 
 // ---------- Señal para bajar ----------
 const scrollHint = document.getElementById("scrollHint");
@@ -73,6 +103,7 @@ const updateHint = () => {
 };
 window.addEventListener("scroll", updateHint, { passive: true });
 scrollHint.addEventListener("click", () => {
+  release();
   window.scrollBy({ top: window.innerHeight * 0.75, behavior: "smooth" });
 });
 updateHint();
@@ -246,6 +277,7 @@ function showError(text, reason) {
   orderError.textContent = text;
   orderError.dataset.reason = reason;
   orderError.hidden = false;
+  release();
   orderError.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 function hideError() {

@@ -23,7 +23,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar-h) + 24px); }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar-h) + 44px); }
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -474,7 +474,7 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
 
   .tabbar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
-    display: grid; grid-template-columns: repeat(4, 1fr);
+    display: grid; grid-template-columns: repeat(5, 1fr);
     padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
     background: var(--navy);
     box-shadow: 0 -4px 16px rgba(11, 42, 87, .3);
@@ -547,3 +547,4 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
 @media (max-width: 760px) {
   .hero__actions .btn--ghost { display: none; }
 }
+.topbar .btn--cta[aria-current] { outline: 2px solid var(--white); outline-offset: 3px; }
