@@ -22,3 +22,14 @@ Abre `index.html` en el navegador. No necesita instalación ni servidor.
 - Las reseñas son de ejemplo: reemplazarlas por reseñas reales.
 - Precios de la carta.
 - Fotos: son de [Unsplash](https://unsplash.com); cambiarlas por fotos reales del local cuando existan.
+
+---
+
+# Loli's Küche
+
+Página de pedidos de salchichas alemanas, en la carpeta [`lolis-kuche/`](lolis-kuche/).
+Abre `lolis-kuche/index.html` en el navegador.
+
+- El menú permite elegir cantidades y arma el mensaje de pedido para WhatsApp con el total.
+- Falta subir `logo.png` y `abuelo.jpg` a la carpeta `lolis-kuche/`. Mientras no estén,
+  la página muestra el nombre en letras y un marco con una flor en lugar de la foto.
