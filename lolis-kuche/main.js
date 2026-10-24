@@ -128,16 +128,12 @@ const totalOf = (list) => list.reduce((sum, [name, q]) => sum + q * priceOf(name
 function buildMessage() {
   const data = new FormData(form);
   const list = picked();
-  let text = "¡Hola, Loli's Küche! Quiero hacer un pedido:\n\n";
-  if (list.length) {
-    text += list.map(([name, q]) => `• ${q} × ${name}`).join("\n");
-    text += `\n\nTotal productos: ${money(totalOf(list))} (sin domicilio)`;
-  } else {
-    text += "• Cantidad × Salchicha:";
-  }
+  const barrio = data.get("barrio").trim();
+  let text = "¡Hola Loli's Küche! Quiero pedir:\n";
+  text += list.length ? list.map(([name, q]) => `• ${q} ${name}`).join("\n") : "• ";
+  if (list.length) text += `\nTotal: ${money(totalOf(list))} + domicilio`;
   text += `\n\nNombre: ${data.get("name").trim()}`;
-  text += `\nDirección de entrega (Bogotá): ${data.get("address").trim()}`;
-  if (data.get("barrio").trim()) text += `\nBarrio o localidad: ${data.get("barrio").trim()}`;
+  text += `\nDirección: ${data.get("address").trim()}${barrio ? ", " + barrio : ""} (Bogotá)`;
   text += `\nPago: ${data.get("pay")}`;
   return text;
 }
