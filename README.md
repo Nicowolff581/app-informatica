@@ -32,3 +32,14 @@ Abre `lolis-kuche/index.html` en el navegador.
 
 - El menú permite elegir cantidades y arma el mensaje de pedido para WhatsApp con el total.
 - Imágenes: `logo.png` (logo completo), `logo-mark.png` (ícono del menú) y `abuelo.jpg`.
+- Domicilios solo en Bogotá: aparece en el inicio, el menú, los pedidos, preguntas frecuentes y contacto.
+
+### SEO
+
+- Título, descripción, Open Graph (`og-image.jpg`) y datos estructurados `FoodEstablishment`
+  con menú, precios y zona de entrega (Bogotá) en `index.html`.
+- `canonical`, `og:url`, el JSON-LD y `sitemap.xml` usan
+  `https://nicowolff581.github.io/app-informatica/lolis-kuche/`. Si la página se publica en otra
+  dirección (por ejemplo un dominio propio), cambia esa dirección en esos lugares.
+- Después de publicarla: envía `sitemap.xml` en Google Search Console y crea el perfil de
+  Google Business Profile como negocio con zona de servicio en Bogotá.

@@ -2,6 +2,7 @@
 const WHATSAPP_NUMBER = "573176645184";
 
 const money = (n) => "$" + n.toLocaleString("es-CO");
+const waLink = (text) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 
 // ---------- Imágenes que faltan (logo.png, abuelo.jpg) ----------
 const onMissing = (img) => {
@@ -24,11 +25,13 @@ const setMenu = (open) => {
   toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
 };
 toggle.addEventListener("click", () => setMenu(!topbar.classList.contains("is-open")));
-document.querySelectorAll("#navMenu a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+document.querySelectorAll("#navMenu a, #navCta").forEach((a) => a.addEventListener("click", () => setMenu(false)));
 
 // ---------- Armar el pedido ----------
 const items = [...document.querySelectorAll(".item")];
 const cart = new Map(items.map((el) => [el.dataset.name, 0]));
+const priceOf = (name) => Number(items.find((el) => el.dataset.name === name).dataset.price);
+
 const lines = document.getElementById("orderLines");
 const empty = document.getElementById("orderEmpty");
 const totalRow = document.getElementById("orderTotalRow");
@@ -36,38 +39,57 @@ const totalEl = document.getElementById("orderTotal");
 const sendBtn = document.getElementById("sendOrder");
 const form = document.getElementById("orderForm");
 
-const priceOf = (name) => Number(items.find((el) => el.dataset.name === name).dataset.price);
+const navCta = document.getElementById("navCta");
+const ctaCount = document.getElementById("ctaCount");
+const cartBar = document.getElementById("cartBar");
+const cartBarCount = document.getElementById("cartBarCount");
+const cartBarTotal = document.getElementById("cartBarTotal");
+const waFloat = document.getElementById("waFloat");
+
+// Mensaje editable ("Prefiero copiar el mensaje y completarlo yo")
+const messageBox = document.getElementById("messageText");
+const sendTemplate = document.getElementById("sendTemplate");
+const resetTemplate = document.getElementById("resetTemplate");
+const copyBtn = document.getElementById("copyTemplate");
+const copyMsg = document.getElementById("copyMsg");
+let messageEdited = false;
+
+const picked = () => [...cart].filter(([, q]) => q > 0);
+const totalOf = (list) => list.reduce((sum, [name, q]) => sum + q * priceOf(name), 0);
 
 function buildMessage() {
   const data = new FormData(form);
-  const picked = [...cart].filter(([, q]) => q > 0);
+  const list = picked();
   let text = "¡Hola, Loli's Küche! Quiero hacer un pedido:\n\n";
-  if (picked.length) {
-    text += picked.map(([name, q]) => `• ${q} × ${name}`).join("\n");
-    const total = picked.reduce((sum, [name, q]) => sum + q * priceOf(name), 0);
-    text += `\n\nTotal productos: ${money(total)} (sin domicilio)`;
+  if (list.length) {
+    text += list.map(([name, q]) => `• ${q} × ${name}`).join("\n");
+    text += `\n\nTotal productos: ${money(totalOf(list))} (sin domicilio)`;
   } else {
     text += "• Cantidad × Salchicha:";
   }
   text += `\n\nNombre: ${data.get("name").trim()}`;
-  text += `\nDirección de entrega: ${data.get("address").trim()}`;
+  text += `\nDirección de entrega (Bogotá): ${data.get("address").trim()}`;
+  text += `\nBarrio o localidad: ${data.get("barrio").trim()}`;
   text += `\nPago: ${data.get("pay")}`;
   return text;
 }
 
+// El texto que se envía: el que la persona editó, o el generado
+const currentMessage = () => (messageEdited ? messageBox.value : buildMessage());
+
 function render() {
-  const picked = [...cart].filter(([, q]) => q > 0);
+  const list = picked();
+  const total = totalOf(list);
+  const count = list.reduce((sum, [, q]) => sum + q, 0);
+
   lines.innerHTML = "";
-  let total = 0;
-  picked.forEach(([name, q]) => {
-    const sub = q * priceOf(name);
-    total += sub;
+  list.forEach(([name, q]) => {
     const li = document.createElement("li");
-    li.innerHTML = `<span>${q} × ${name}</span><span>${money(sub)}</span>`;
+    li.innerHTML = `<span>${q} × ${name}</span><span>${money(q * priceOf(name))}</span>`;
     lines.appendChild(li);
   });
-  empty.hidden = picked.length > 0;
-  totalRow.hidden = picked.length === 0;
+  empty.hidden = list.length > 0;
+  totalRow.hidden = list.length === 0;
   totalEl.textContent = money(total);
 
   items.forEach((el) => {
@@ -76,7 +98,34 @@ function render() {
     el.classList.toggle("is-picked", q > 0);
   });
 
-  sendBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildMessage())}`;
+  // Botón "Pedir ahora" del menú superior
+  ctaCount.hidden = count === 0;
+  ctaCount.textContent = count;
+  navCta.setAttribute("aria-label", count ? `Pedir ahora: ${count} paquete${count > 1 ? "s" : ""} en tu pedido` : "Pedir ahora");
+
+  // Barra inferior con el resumen
+  cartBarCount.textContent = `${count} paquete${count === 1 ? "" : "s"}`;
+  cartBarTotal.textContent = money(total);
+  updateCartBar();
+
+  if (!messageEdited) messageBox.value = buildMessage();
+  const link = waLink(currentMessage());
+  sendBtn.href = link;
+  sendTemplate.href = link;
+}
+
+// La barra inferior se oculta cuando ya estás viendo la sección de pedidos
+let pedidosVisible = false;
+function updateCartBar() {
+  const show = picked().length > 0 && !pedidosVisible;
+  cartBar.hidden = !show;
+  waFloat.classList.toggle("is-raised", show);
+}
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver(([entry]) => {
+    pedidosVisible = entry.isIntersecting;
+    updateCartBar();
+  }, { threshold: 0.15 }).observe(document.getElementById("pedidos"));
 }
 
 items.forEach((el) => {
@@ -85,33 +134,44 @@ items.forEach((el) => {
       const name = el.dataset.name;
       cart.set(name, Math.max(0, cart.get(name) + Number(btn.dataset.step)));
       render();
+      if (btn.dataset.step === "1") {
+        navCta.classList.remove("is-bump");
+        void navCta.offsetWidth;
+        navCta.classList.add("is-bump");
+      }
     });
   });
 });
 form.addEventListener("input", render);
 form.addEventListener("submit", (e) => e.preventDefault());
-render();
 
-// ---------- Copiar el mensaje de ejemplo ----------
-const copyBtn = document.getElementById("copyTemplate");
-const copyMsg = document.getElementById("copyMsg");
-const tpl = document.getElementById("templateText");
+messageBox.addEventListener("input", () => {
+  messageEdited = true;
+  resetTemplate.hidden = false;
+  render();
+});
+resetTemplate.addEventListener("click", () => {
+  messageEdited = false;
+  resetTemplate.hidden = true;
+  copyMsg.textContent = "";
+  render();
+});
+
 copyBtn.addEventListener("click", () => {
   const selectText = () => {
-    const range = document.createRange();
-    range.selectNodeContents(tpl);
-    const sel = getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+    messageBox.focus();
+    messageBox.select();
     copyMsg.textContent = "Texto seleccionado: cópialo con Ctrl+C o mantén presionado.";
   };
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(tpl.textContent)
-      .then(() => { copyMsg.textContent = "Mensaje copiado."; })
+    navigator.clipboard.writeText(messageBox.value)
+      .then(() => { copyMsg.textContent = "Mensaje copiado. Pégalo en WhatsApp al 317 664 5184."; })
       .catch(selectText);
   } else {
     selectText();
   }
 });
+
+render();
 
 document.getElementById("year").textContent = new Date().getFullYear();
