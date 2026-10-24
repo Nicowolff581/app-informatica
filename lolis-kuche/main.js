@@ -137,10 +137,13 @@ function buildMessage() {
   }
   text += `\n\nNombre: ${data.get("name").trim()}`;
   text += `\nDirección de entrega (Bogotá): ${data.get("address").trim()}`;
-  text += `\nBarrio o localidad: ${data.get("barrio").trim()}`;
+  if (data.get("barrio").trim()) text += `\nBarrio o localidad: ${data.get("barrio").trim()}`;
   text += `\nPago: ${data.get("pay")}`;
   return text;
 }
+
+const filled = (id) => document.getElementById(id).value.trim() !== "";
+const orderReady = () => messageEdited || (picked().length > 0 && filled("oName") && filled("oAddress"));
 
 // El texto que se envía: el que la persona editó, o el generado
 const currentMessage = () => (messageEdited ? messageBox.value : buildMessage());
@@ -191,8 +194,16 @@ function render() {
 
   if (!messageEdited) messageBox.value = buildMessage();
   const link = waLink(currentMessage());
-  sendBtn.href = link;
   sendTemplate.href = link;
+  // Sin salchichas, nombre o dirección, el botón no lleva a WhatsApp: muestra qué falta.
+  // (Algunas apps abren el enlace antes de que la página pueda detenerlo.)
+  if (orderReady()) {
+    sendBtn.href = link;
+    sendBtn.target = "_blank";
+  } else {
+    sendBtn.href = "#orderForm";
+    sendBtn.removeAttribute("target");
+  }
 }
 
 // La barra inferior se oculta cuando ya estás viendo la sección de pedidos
