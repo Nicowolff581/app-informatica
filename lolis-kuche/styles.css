@@ -412,3 +412,89 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
 @media (max-width: 360px) {
   .brand__name { display: none; }
 }
+
+/* =========================================================
+   Orientación: siempre saber dónde estás
+   ========================================================= */
+.where { display: none; margin: 0; color: var(--pale); font: 400 .85rem var(--font-title); white-space: nowrap; }
+.where strong { display: inline-block; margin-left: .2em; padding: .2em .6em; border-radius: 999px; background: var(--sky); color: var(--navy); font-weight: 700; }
+
+.topbar__nav a[aria-current] { color: var(--sky); box-shadow: inset 0 -2px 0 var(--sky); }
+
+.step-pill {
+  display: inline-block; margin: .8rem 0 0; padding: .35em 1em;
+  border-radius: 999px; background: var(--navy); color: var(--white);
+  font: 600 .9rem var(--font-title);
+}
+
+/* La sección a la que llegaste se ilumina un momento */
+.section__head.is-arrived { animation: arrived 1.4s ease; border-radius: var(--radius); }
+@keyframes arrived {
+  0%, 35% { background: rgba(26, 169, 238, .22); box-shadow: 0 0 0 10px rgba(26, 169, 238, .22); }
+  100% { background: transparent; box-shadow: 0 0 0 10px transparent; }
+}
+
+.menu-next { margin-top: 2rem; text-align: center; }
+.menu-next__hint { margin: 0; color: var(--muted); font-style: italic; }
+
+/* Botón verde de WhatsApp */
+.btn--wa { background: #15803d; color: var(--white); box-shadow: 0 4px 0 #0e5a2b; }
+.btn--wa:hover { background: #166534; }
+.btn--wa:active { transform: translateY(2px); box-shadow: 0 2px 0 #0e5a2b; }
+
+.order__change { margin-top: 1rem; }
+.order__error {
+  margin: 0 0 .9rem; padding: .7rem .9rem; border-radius: 8px;
+  background: #fdecec; color: #a11d1d; font: 600 .95rem var(--font-title);
+}
+.req, .optional { font-weight: 400; color: var(--muted); font-size: .85em; }
+.field input.is-invalid { border-color: #c62828; box-shadow: 0 0 0 3px rgba(198, 40, 40, .15); }
+
+/* Aviso corto al agregar o quitar */
+.toast {
+  position: fixed; left: 50%; bottom: 24px; z-index: 80;
+  transform: translateX(-50%);
+  width: max-content; max-width: calc(100% - 32px);
+  padding: .8rem 1.2rem; border-radius: 12px;
+  background: var(--navy); color: var(--white);
+  font: 600 .98rem var(--font-title); text-align: center;
+  box-shadow: 0 10px 26px rgba(11, 42, 87, .35);
+  animation: toast-in .25s ease;
+}
+.toast.is-out { opacity: 0; transition: opacity .25s; }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } }
+
+/* Barra inferior (solo celular) */
+.tabbar { display: none; }
+
+@media (max-width: 760px) {
+  body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  .topbar__nav, #navCta, .wa-float, .cart-bar { display: none !important; }
+  .where { display: block; }
+
+  .tabbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: var(--navy);
+    box-shadow: 0 -4px 16px rgba(11, 42, 87, .3);
+  }
+  .tabbar a {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 6px 2px; border-radius: 10px;
+    color: var(--pale); text-decoration: none;
+    font: 600 .78rem var(--font-title);
+  }
+  .tabbar svg { width: 24px; height: 24px; }
+  .tabbar a[aria-current] { background: var(--sky); color: var(--navy); }
+  .tabbar__icon { position: relative; display: block; height: 24px; }
+  .tabbar__badge {
+    position: absolute; top: -6px; right: -12px;
+    min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: #15803d; color: var(--white); font-size: .72rem;
+    border: 2px solid var(--navy);
+  }
+  .toast { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+}
+#menuNext { white-space: normal; max-width: 100%; }

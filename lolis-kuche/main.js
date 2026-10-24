@@ -16,16 +16,68 @@ document.querySelectorAll("img[data-fallback]").forEach((img) => {
   else img.addEventListener("error", () => onMissing(img));
 });
 
-// ---------- Menú móvil ----------
-const topbar = document.getElementById("top");
-const toggle = document.getElementById("navToggle");
-const setMenu = (open) => {
-  topbar.classList.toggle("is-open", open);
-  toggle.setAttribute("aria-expanded", String(open));
-  toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+// ---------- Dónde estás: resaltar la sección actual ----------
+const SECTION_NAMES = {
+  inicio: "Inicio",
+  "nuestra-historia": "Historia",
+  menu: "Menú",
+  pedidos: "Tu pedido",
+  preguntas: "Preguntas",
+  contacto: "Contacto",
 };
-toggle.addEventListener("click", () => setMenu(!topbar.classList.contains("is-open")));
-document.querySelectorAll("#navMenu a, #navCta").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+// En la barra inferior, Historia cuenta como Inicio y Preguntas como Contacto
+const TAB_FOR = { "nuestra-historia": "inicio", preguntas: "contacto" };
+const whereLabel = document.getElementById("whereLabel");
+const navLinks = [...document.querySelectorAll("#navMenu a, .tabbar a")];
+
+function setCurrent(id) {
+  whereLabel.textContent = SECTION_NAMES[id];
+  const tab = TAB_FOR[id] || id;
+  navLinks.forEach((a) => {
+    const target = a.dataset.section || a.getAttribute("href").slice(1);
+    const on = a.closest(".tabbar") ? target === tab : target === id;
+    if (on) a.setAttribute("aria-current", "true");
+    else a.removeAttribute("aria-current");
+  });
+}
+
+const sections = Object.keys(SECTION_NAMES).map((id) => document.getElementById(id));
+if ("IntersectionObserver" in window) {
+  // La sección que ocupa el centro de la pantalla es la actual
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) setCurrent(e.target.id); });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  sections.forEach((sec) => spy.observe(sec));
+}
+setCurrent("inicio");
+
+// Al tocar un enlace interno, la sección de destino se ilumina un momento
+document.querySelectorAll('a[href^="#"]').forEach((a) => {
+  a.addEventListener("click", () => {
+    const target = document.getElementById(a.getAttribute("href").slice(1));
+    if (!target) return;
+    const head = target.querySelector(".section__head") || target;
+    setTimeout(() => {
+      head.classList.remove("is-arrived");
+      void head.offsetWidth;
+      head.classList.add("is-arrived");
+    }, 450);
+  });
+});
+
+// ---------- Aviso corto ----------
+const toast = document.getElementById("toast");
+let toastTimer;
+function showToast(text) {
+  toast.textContent = text;
+  toast.hidden = false;
+  toast.classList.remove("is-out");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.add("is-out");
+    setTimeout(() => { toast.hidden = true; }, 250);
+  }, 2200);
+}
 
 // ---------- Armar el pedido ----------
 const items = [...document.querySelectorAll(".item")];
@@ -45,6 +97,10 @@ const cartBar = document.getElementById("cartBar");
 const cartBarCount = document.getElementById("cartBarCount");
 const cartBarTotal = document.getElementById("cartBarTotal");
 const waFloat = document.getElementById("waFloat");
+const tabCount = document.getElementById("tabCount");
+const menuNext = document.getElementById("menuNext");
+const menuNextHint = document.getElementById("menuNextHint");
+const orderError = document.getElementById("orderError");
 
 // Mensaje editable ("Prefiero copiar el mensaje y completarlo yo")
 const messageBox = document.getElementById("messageText");
@@ -103,6 +159,13 @@ function render() {
   ctaCount.textContent = count;
   navCta.setAttribute("aria-label", count ? `Pedir ahora: ${count} paquete${count > 1 ? "s" : ""} en tu pedido` : "Pedir ahora");
 
+  tabCount.hidden = count === 0;
+  tabCount.textContent = count;
+  menuNext.hidden = count === 0;
+  menuNextHint.hidden = count > 0;
+  menuNext.textContent = `Listo, seguir al paso 2 (${count} paquete${count === 1 ? "" : "s"}) →`;
+  if (count > 0 && orderError.dataset.reason === "empty") hideError();
+
   // Barra inferior con el resumen
   cartBarCount.textContent = `${count} paquete${count === 1 ? "" : "s"}`;
   cartBarTotal.textContent = money(total);
@@ -132,8 +195,13 @@ items.forEach((el) => {
   el.querySelectorAll(".qty__btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const name = el.dataset.name;
-      cart.set(name, Math.max(0, cart.get(name) + Number(btn.dataset.step)));
+      const before = cart.get(name);
+      cart.set(name, Math.max(0, before + Number(btn.dataset.step)));
       render();
+      const count = picked().reduce((sum, [, q]) => sum + q, 0);
+      const llevas = count ? `Llevas ${count} paquete${count === 1 ? "" : "s"}.` : "Tu pedido está vacío.";
+      if (btn.dataset.step === "1") showToast(`✓ Agregaste 1 ${name}. ${llevas}`);
+      else if (before > 0) showToast(`Quitaste 1 ${name}. ${llevas}`);
       if (btn.dataset.step === "1") {
         navCta.classList.remove("is-bump");
         void navCta.offsetWidth;
@@ -142,7 +210,41 @@ items.forEach((el) => {
     });
   });
 });
-form.addEventListener("input", render);
+form.addEventListener("input", (e) => {
+  e.target.classList.remove("is-invalid");
+  if (orderError.dataset.reason === "fields") hideError();
+  render();
+});
+
+// ---------- Revisar antes de abrir WhatsApp ----------
+function showError(text, reason) {
+  orderError.textContent = text;
+  orderError.dataset.reason = reason;
+  orderError.hidden = false;
+  orderError.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function hideError() {
+  orderError.hidden = true;
+  orderError.dataset.reason = "";
+}
+
+sendBtn.addEventListener("click", (e) => {
+  if (messageEdited) return; // la persona escribió su propio mensaje
+  if (picked().length === 0) {
+    e.preventDefault();
+    showError("Primero elige al menos una salchicha en el menú (paso 1).", "empty");
+    showToast("Primero elige tus salchichas en el menú.");
+    return;
+  }
+  const missing = ["oName", "oAddress"].map((id) => document.getElementById(id)).filter((el) => !el.value.trim());
+  if (missing.length) {
+    e.preventDefault();
+    missing.forEach((el) => el.classList.add("is-invalid"));
+    showError(missing.length === 2 ? "Escribe tu nombre y tu dirección de entrega." :
+      missing[0].id === "oName" ? "Escribe tu nombre." : "Escribe tu dirección de entrega en Bogotá.", "fields");
+    missing[0].focus();
+  }
+});
 form.addEventListener("submit", (e) => e.preventDefault());
 
 messageBox.addEventListener("input", () => {
