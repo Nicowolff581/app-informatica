@@ -74,32 +74,65 @@ window.addEventListener("scroll", () => {
   });
 }, { passive: true });
 
-// Al tocar un enlace interno: marcar la sección de destino y hacer que se ilumine
+// ---------- Moverse entre secciones ----------
+// Distancias cortas: deslizamiento suave. Distancias largas: la página se desvanece,
+// salta y vuelve a aparecer, en vez de pasar volando por todas las secciones.
+const root = document.documentElement;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let moving = false;
+
+function jumpTo(target) {
+  root.style.scrollBehavior = "auto";
+  target.scrollIntoView({ block: "start" });
+  root.style.scrollBehavior = "";
+}
+
+function goTo(target) {
+  const distance = Math.abs(target.getBoundingClientRect().top);
+  if (reduceMotion) return jumpTo(target);
+  if (distance < window.innerHeight * 1.2) {
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  if (moving) return;
+  moving = true;
+  document.body.classList.add("is-leaving");
+  setTimeout(() => {
+    jumpTo(target);
+    document.body.classList.remove("is-leaving");
+    document.body.classList.add("is-entering");
+    setTimeout(() => {
+      document.body.classList.remove("is-entering");
+      moving = false;
+    }, 260);
+  }, 160);
+}
+
 document.addEventListener("click", (e) => {
+  if (e.defaultPrevented) return;
   const a = e.target.closest('a[href^="#"]');
   if (!a) return;
   const target = document.getElementById(a.getAttribute("href").slice(1));
   if (!target) return;
+  e.preventDefault();
   const sec = target.closest("section");
   if (sec && SECTION_NAMES[sec.id]) {
     chosen = sec.id;
     setCurrent(sec.id);
   }
-  const head = (sec && sec.querySelector(".section__head")) || target;
-  setTimeout(() => {
-    head.classList.remove("is-arrived");
-    void head.offsetWidth;
-    head.classList.add("is-arrived");
-  }, 450);
+  goTo(target);
 });
 
 setCurrent(sectionInView());
 
 // ---------- Señal para bajar ----------
 const scrollHint = document.getElementById("scrollHint");
+// Se muestra solo al abrir la página; cuando la persona baja, no vuelve a aparecer
 const updateHint = () => {
-  const nearBottom = window.innerHeight + window.scrollY > document.body.scrollHeight - 200;
-  scrollHint.classList.toggle("is-gone", window.scrollY > 120 || nearBottom);
+  if (window.scrollY > 120) {
+    scrollHint.classList.add("is-gone");
+    window.removeEventListener("scroll", updateHint);
+  }
 };
 window.addEventListener("scroll", updateHint, { passive: true });
 scrollHint.addEventListener("click", () => {
