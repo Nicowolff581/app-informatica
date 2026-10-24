@@ -45,7 +45,7 @@ function sectionInView() {
   let current = sections[0].id;
   for (const sec of sections) {
     const top = sec.getBoundingClientRect().top;
-    if (top <= line || (atBottom && top < window.innerHeight * 0.6)) current = sec.id;
+    if (top <= line || (atBottom && top < window.innerHeight - 120)) current = sec.id;
   }
   return current;
 }
@@ -54,6 +54,7 @@ function sectionInView() {
 // bajar hasta ponerla arriba (pasa con las últimas secciones). Se suelta cuando la
 // persona vuelve a mover la página con el dedo, la rueda o el teclado.
 let chosen = null;
+let moving = false;
 const release = () => { chosen = null; };
 ["wheel", "touchmove", "keydown", "pointerdown"].forEach((ev) => window.addEventListener(ev, release, { passive: true }));
 
@@ -64,7 +65,7 @@ window.addEventListener("scroll", () => {
   requestAnimationFrame(() => {
     ticking = false;
     // Si la sección elegida ya no se ve, vuelve a mandar la posición real
-    if (chosen) {
+    if (chosen && !moving) {
       const r = document.getElementById(chosen).getBoundingClientRect();
       if (r.bottom < topbarEl.offsetHeight || r.top > window.innerHeight) release();
     }
@@ -73,49 +74,50 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 // ---------- Moverse entre secciones ----------
-// La página sube o baja hacia la sección elegida sin mostrar lo que hay en el camino:
-// el contenido se desliza y se desvanece en la dirección del movimiento, salta, y la
-// sección nueva entra deslizándose desde el mismo lado.
+// La página sube o baja hasta la sección con un movimiento parejo: arranca suave,
+// avanza y frena al llegar, y dura casi lo mismo sea cerca o lejos. Mientras se mueve,
+// las barras de arriba y de abajo no cambian: ya muestran la sección de destino.
 const root = document.documentElement;
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const moversEls = [document.querySelector("main"), document.querySelector(".footer")];
-let moving = false;
+let scrollAnim = 0;
 
-function jumpTo(target) {
-  root.style.scrollBehavior = "auto";
-  target.scrollIntoView({ block: "start" });
-  root.style.scrollBehavior = "";
+const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+function targetY(target) {
+  const pad = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+  const max = root.scrollHeight - window.innerHeight;
+  return Math.max(0, Math.min(max, target.getBoundingClientRect().top + window.scrollY - pad));
+}
+
+function stopMoving() {
+  cancelAnimationFrame(scrollAnim);
+  if (moving) {
+    moving = false;
+    root.style.scrollBehavior = "";
+    updateCartBar();
+  }
 }
 
 function goTo(target) {
-  const top = target.getBoundingClientRect().top - topbarEl.offsetHeight;
-  if (reduceMotion || !moversEls[0].animate) return jumpTo(target);
-  // Muy cerca: un deslizamiento normal se ve bien
-  if (Math.abs(top) < window.innerHeight * 0.5) {
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-    return;
-  }
-  if (moving) return;
+  stopMoving();
+  const from = window.scrollY;
+  const to = targetY(target);
+  const distance = Math.abs(to - from);
+  if (distance < 2) return;
+  const duration = Math.min(900, 450 + distance * 0.06);
+  const t0 = performance.now();
   moving = true;
-  const dir = top > 0 ? 1 : -1;          // 1 = bajar, -1 = subir
-  const shift = Math.round(window.innerHeight * 0.18);
-  const out = moversEls.map((el) => el.animate(
-    [{ transform: "none", opacity: 1 }, { transform: `translateY(${-dir * shift}px)`, opacity: 0 }],
-    { duration: 200, easing: "cubic-bezier(.4, 0, 1, 1)", fill: "forwards" }
-  ));
-  out[0].onfinish = () => {
-    // Quitar el desplazamiento antes de saltar, para que la sección quede bien ubicada
-    moversEls.forEach((el) => { el.style.opacity = "0"; });
-    out.forEach((a) => a.cancel());
-    jumpTo(target);
-    const enter = moversEls.map((el) => el.animate(
-      [{ transform: `translateY(${dir * shift}px)`, opacity: 0 }, { transform: "none", opacity: 1 }],
-      { duration: 320, easing: "cubic-bezier(0, 0, .2, 1)" }
-    ));
-    moversEls.forEach((el) => { el.style.opacity = ""; });
-    enter[0].onfinish = () => { moving = false; };
+  root.style.scrollBehavior = "auto";
+  const step = (now) => {
+    const t = Math.min(1, (now - t0) / duration);
+    window.scrollTo(0, from + (to - from) * easeInOut(t));
+    if (t < 1) scrollAnim = requestAnimationFrame(step);
+    else stopMoving();
   };
+  scrollAnim = requestAnimationFrame(step);
 }
+
+// Si la persona mueve la página con el dedo o la rueda, el movimiento se detiene
+["wheel", "touchstart"].forEach((ev) => window.addEventListener(ev, () => { if (moving) stopMoving(); }, { passive: true }));
 
 document.addEventListener("click", (e) => {
   if (e.defaultPrevented) return;
@@ -278,6 +280,7 @@ function render() {
 // La barra inferior se oculta cuando ya estás viendo la sección de pedidos
 let pedidosVisible = false;
 function updateCartBar() {
+  if (moving) return;
   const show = picked().length > 0 && !pedidosVisible;
   cartBar.hidden = !show;
   waFloat.classList.toggle("is-raised", show);
