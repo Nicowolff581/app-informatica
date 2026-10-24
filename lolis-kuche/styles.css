@@ -68,7 +68,7 @@ h1, h2, h3, h4 { font-family: var(--font-title); font-weight: 700; color: var(--
 }
 .topbar { background: var(--navy); }
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--white); }
-.brand__logo { width: 44px; height: 44px; object-fit: contain; border-radius: 50%; background: var(--white); }
+.brand__logo { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; background: var(--white); padding: 2px; }
 .brand__name { font: 700 1.25rem var(--font-title); }
 .topbar__nav { display: flex; align-items: center; gap: 1.6rem; }
 .topbar__nav a:not(.btn) {
@@ -110,7 +110,7 @@ h1, h2, h3, h4 { font-family: var(--font-title); font-weight: 700; color: var(--
   text-align: center;
 }
 .hero__inner { display: flex; flex-direction: column; align-items: center; }
-.hero__logo { width: min(260px, 70vw); margin-bottom: 1rem; }
+.hero__logo { width: min(280px, 70vw); margin-bottom: 1rem; mix-blend-mode: multiply; }
 .hero__wordmark {
   display: flex; flex-direction: column; margin-bottom: 1rem;
   font: 700 clamp(3rem, 12vw, 5rem)/0.95 var(--font-title); color: var(--navy);
@@ -161,7 +161,7 @@ h1, h2, h3, h4 { font-family: var(--font-title); font-weight: 700; color: var(--
   background: var(--pale); color: var(--muted); font: 600 .9rem var(--font-title);
 }
 .arch__empty[hidden] { display: none; }
-.story__flower { position: absolute; width: 64px; height: 64px; top: 58%; right: -22px; }
+.edelweiss.story__flower { position: absolute; width: 64px; height: 64px; top: 58%; right: -22px; }
 .story__figure figcaption {
   text-align: center; margin-top: .8rem;
   font: italic 1rem var(--font-body); color: var(--muted);
@@ -286,7 +286,7 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
 .footer { background: var(--navy); color: var(--pale); text-align: center; }
 .rauten--footer { border-top: 0; }
 .footer__inner { padding-block: 3rem 2rem; display: flex; flex-direction: column; align-items: center; }
-.footer__logo { width: 110px; height: 110px; object-fit: contain; border-radius: 50%; background: var(--white); margin-bottom: 1rem; }
+.footer__logo { width: 130px; height: auto; border-radius: 10px; background: var(--white); padding: 8px; margin-bottom: 1rem; }
 .footer__name { font: 700 1.4rem var(--font-title); color: var(--white); margin: 0 0 .3rem; }
 .footer p { margin: 0 0 .6rem; }
 .footer__bye { font: 400 2rem var(--font-script); color: var(--sky); margin-top: .6rem !important; }
@@ -325,7 +325,7 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
   .topbar.is-open .awning { visibility: hidden; }
 
   .story, .order { grid-template-columns: minmax(0, 1fr); }
-  .story__flower { right: -8px; }
+  .edelweiss.story__flower { right: -8px; }
   .steps { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {

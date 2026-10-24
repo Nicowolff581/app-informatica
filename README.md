@@ -31,5 +31,4 @@ Página de pedidos de salchichas alemanas, en la carpeta [`lolis-kuche/`](lolis-
 Abre `lolis-kuche/index.html` en el navegador.
 
 - El menú permite elegir cantidades y arma el mensaje de pedido para WhatsApp con el total.
-- Falta subir `logo.png` y `abuelo.jpg` a la carpeta `lolis-kuche/`. Mientras no estén,
-  la página muestra el nombre en letras y un marco con una flor en lugar de la foto.
+- Imágenes: `logo.png` (logo completo), `logo-mark.png` (ícono del menú) y `abuelo.jpg`.
