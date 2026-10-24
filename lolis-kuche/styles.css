@@ -409,15 +409,10 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
   .qty { justify-self: start; }
 }
 
-@media (max-width: 360px) {
-  .brand__name { display: none; }
-}
 
 /* =========================================================
    Orientación: siempre saber dónde estás
    ========================================================= */
-.where { display: none; margin: 0; color: var(--pale); font: 400 .85rem var(--font-title); white-space: nowrap; }
-.where strong { display: inline-block; margin-left: .2em; padding: .2em .6em; border-radius: 999px; background: var(--sky); color: var(--navy); font-weight: 700; }
 
 .topbar__nav a[aria-current] { color: var(--sky); box-shadow: inset 0 -2px 0 var(--sky); }
 
@@ -428,10 +423,6 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
 }
 
 /* Cambio de sección: desvanecer, saltar y aparecer */
-main, .footer { transition: opacity .16s ease, transform .16s ease; }
-body.is-leaving main, body.is-leaving .footer { opacity: 0; transform: translateY(6px); }
-body.is-entering main, body.is-entering .footer { animation: section-in .26s ease-out; }
-@keyframes section-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
 .menu-next { margin-top: 2rem; text-align: center; }
 .menu-next__hint { margin: 0; color: var(--muted); font-style: italic; }
@@ -469,7 +460,6 @@ body.is-entering main, body.is-entering .footer { animation: section-in .26s eas
 @media (max-width: 760px) {
   body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
   .topbar__nav, #navCta, .wa-float, .cart-bar { display: none !important; }
-  .where { display: block; }
 
   .tabbar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;

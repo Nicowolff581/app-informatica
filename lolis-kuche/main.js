@@ -25,13 +25,11 @@ const SECTION_NAMES = {
   preguntas: "Preguntas",
   contacto: "Contacto",
 };
-const whereLabel = document.getElementById("whereLabel");
 const navLinks = [...document.querySelectorAll("#navMenu a, .tabbar a, #navCta")];
 const topbarEl = document.getElementById("top");
 const sections = Object.keys(SECTION_NAMES).map((id) => document.getElementById(id));
 
 function setCurrent(id) {
-  whereLabel.textContent = SECTION_NAMES[id];
   navLinks.forEach((a) => {
     const target = a.dataset.section || a.getAttribute("href").slice(1);
     if (target === id) a.setAttribute("aria-current", "true");
@@ -75,10 +73,12 @@ window.addEventListener("scroll", () => {
 }, { passive: true });
 
 // ---------- Moverse entre secciones ----------
-// Distancias cortas: deslizamiento suave. Distancias largas: la página se desvanece,
-// salta y vuelve a aparecer, en vez de pasar volando por todas las secciones.
+// La página sube o baja hacia la sección elegida sin mostrar lo que hay en el camino:
+// el contenido se desliza y se desvanece en la dirección del movimiento, salta, y la
+// sección nueva entra deslizándose desde el mismo lado.
 const root = document.documentElement;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const moversEls = [document.querySelector("main"), document.querySelector(".footer")];
 let moving = false;
 
 function jumpTo(target) {
@@ -88,24 +88,33 @@ function jumpTo(target) {
 }
 
 function goTo(target) {
-  const distance = Math.abs(target.getBoundingClientRect().top);
-  if (reduceMotion) return jumpTo(target);
-  if (distance < window.innerHeight * 1.2) {
+  const top = target.getBoundingClientRect().top - topbarEl.offsetHeight;
+  if (reduceMotion || !moversEls[0].animate) return jumpTo(target);
+  // Muy cerca: un deslizamiento normal se ve bien
+  if (Math.abs(top) < window.innerHeight * 0.5) {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
   if (moving) return;
   moving = true;
-  document.body.classList.add("is-leaving");
-  setTimeout(() => {
+  const dir = top > 0 ? 1 : -1;          // 1 = bajar, -1 = subir
+  const shift = Math.round(window.innerHeight * 0.18);
+  const out = moversEls.map((el) => el.animate(
+    [{ transform: "none", opacity: 1 }, { transform: `translateY(${-dir * shift}px)`, opacity: 0 }],
+    { duration: 200, easing: "cubic-bezier(.4, 0, 1, 1)", fill: "forwards" }
+  ));
+  out[0].onfinish = () => {
+    // Quitar el desplazamiento antes de saltar, para que la sección quede bien ubicada
+    moversEls.forEach((el) => { el.style.opacity = "0"; });
+    out.forEach((a) => a.cancel());
     jumpTo(target);
-    document.body.classList.remove("is-leaving");
-    document.body.classList.add("is-entering");
-    setTimeout(() => {
-      document.body.classList.remove("is-entering");
-      moving = false;
-    }, 260);
-  }, 160);
+    const enter = moversEls.map((el) => el.animate(
+      [{ transform: `translateY(${dir * shift}px)`, opacity: 0 }, { transform: "none", opacity: 1 }],
+      { duration: 320, easing: "cubic-bezier(0, 0, .2, 1)" }
+    ));
+    moversEls.forEach((el) => { el.style.opacity = ""; });
+    enter[0].onfinish = () => { moving = false; };
+  };
 }
 
 document.addEventListener("click", (e) => {
