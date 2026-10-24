@@ -65,6 +65,18 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => {
   });
 });
 
+// ---------- Señal para bajar ----------
+const scrollHint = document.getElementById("scrollHint");
+const updateHint = () => {
+  const nearBottom = window.innerHeight + window.scrollY > document.body.scrollHeight - 200;
+  scrollHint.classList.toggle("is-gone", window.scrollY > 120 || nearBottom);
+};
+window.addEventListener("scroll", updateHint, { passive: true });
+scrollHint.addEventListener("click", () => {
+  window.scrollBy({ top: window.innerHeight * 0.75, behavior: "smooth" });
+});
+updateHint();
+
 // ---------- Aviso corto ----------
 const toast = document.getElementById("toast");
 let toastTimer;
@@ -158,6 +170,12 @@ function render() {
   ctaCount.hidden = count === 0;
   ctaCount.textContent = count;
   navCta.setAttribute("aria-label", count ? `Pedir ahora: ${count} paquete${count > 1 ? "s" : ""} en tu pedido` : "Pedir ahora");
+
+  // Botones de pedido: sin salchichas van al paso 1 (menú); con salchichas, al paso 2
+  document.querySelectorAll("[data-order-link]").forEach((a) => {
+    a.setAttribute("href", count ? "#pedidos" : "#menu");
+  });
+  document.getElementById("tabCta").classList.toggle("has-items", count > 0);
 
   tabCount.hidden = count === 0;
   tabCount.textContent = count;

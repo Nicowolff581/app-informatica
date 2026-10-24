@@ -123,11 +123,11 @@
       <nav class="topbar__nav" id="navMenu" aria-label="Principal">
         <a href="#nuestra-historia">Historia</a>
         <a href="#menu">Menú</a>
-        <a href="#pedidos">Tu pedido</a>
+        <a href="#menu" data-order-link data-section="pedidos">Tu pedido</a>
         <a href="#preguntas">Preguntas</a>
         <a href="#contacto">Contacto</a>
       </nav>
-      <a href="#pedidos" class="btn btn--cta" id="navCta">
+      <a href="#menu" class="btn btn--cta" id="navCta" data-order-link>
         <svg aria-hidden="true"><use href="#cart-icon"/></svg>
         <span>Pedir<span class="cta-extra"> ahora</span></span>
         <span class="cta-count" id="ctaCount" hidden>0</span>
@@ -154,7 +154,7 @@
             <svg aria-hidden="true"><use href="#cart-icon"/></svg>
             Armar mi pedido
           </a>
-          <a href="#pedidos" class="btn btn--ghost btn--lg">Cómo pedir</a>
+          <a href="#nuestra-historia" class="btn btn--ghost btn--lg">Nuestra historia</a>
         </div>
         <ul class="badges">
           <li>8 variedades</li>
@@ -499,9 +499,15 @@
   <nav class="tabbar" aria-label="Secciones">
     <a href="#inicio" data-section="inicio"><svg aria-hidden="true"><use href="#home-icon"/></svg>Inicio</a>
     <a href="#menu" data-section="menu"><svg aria-hidden="true"><use href="#list-icon"/></svg>Menú</a>
-    <a href="#pedidos" data-section="pedidos"><span class="tabbar__icon"><svg aria-hidden="true"><use href="#cart-icon"/></svg><span class="tabbar__badge" id="tabCount" hidden>0</span></span>Mi pedido</a>
+    <a href="#menu" data-section="pedidos" data-order-link class="tabbar__cta" id="tabCta"><span class="tabbar__icon"><svg aria-hidden="true"><use href="#cart-icon"/></svg><span class="tabbar__badge" id="tabCount" hidden>0</span></span>Mi pedido</a>
     <a href="#contacto" data-section="contacto"><svg aria-hidden="true"><use href="#chat-icon"/></svg>Contacto</a>
   </nav>
+
+  <!-- Señal para bajar: se esconde al empezar a bajar -->
+  <button type="button" class="scroll-hint" id="scrollHint">
+    Baja para ver más
+    <svg aria-hidden="true" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
+  </button>
 
   <!-- Aviso corto al agregar o quitar -->
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>

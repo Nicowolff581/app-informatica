@@ -498,3 +498,52 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
   .toast { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
 #menuNext { white-space: normal; max-width: 100%; }
+
+/* Señal para bajar */
+.scroll-hint {
+  position: fixed; left: 50%; bottom: 24px; z-index: 65;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 0;
+  transform: translateX(-50%);
+  padding: .55rem 1.1rem .35rem; border: 0; border-radius: 999px;
+  background: var(--navy); color: var(--white);
+  font: 600 .9rem var(--font-title); cursor: pointer;
+  box-shadow: 0 8px 20px rgba(11, 42, 87, .35);
+  transition: opacity .3s, transform .3s;
+}
+.scroll-hint svg { width: 22px; height: 22px; color: var(--sky); animation: hint-bounce 1.2s ease-in-out infinite; }
+.scroll-hint.is-gone { opacity: 0; transform: translate(-50%, 12px); pointer-events: none; }
+@keyframes hint-bounce { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(5px); } }
+
+@media (max-width: 760px) {
+  .scroll-hint { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+
+  /* El carrito de la barra inferior es el botón principal */
+  .tabbar { overflow: visible; }
+  .tabbar a.tabbar__cta { position: relative; color: var(--white); background: none; padding-top: 0; }
+  .tabbar__cta .tabbar__icon {
+    display: grid; place-items: center;
+    width: 58px; height: 58px; margin-top: -26px; margin-bottom: 1px;
+    border-radius: 50%; background: var(--sky); color: var(--navy);
+    border: 4px solid var(--navy);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .3);
+  }
+  .tabbar__cta .tabbar__icon svg { width: 28px; height: 28px; }
+  .tabbar__cta .tabbar__badge { top: -4px; right: -6px; }
+  .tabbar a.tabbar__cta[aria-current] { background: none; color: var(--sky); }
+  .tabbar__cta.has-items .tabbar__icon { animation: cta-ring 1.8s ease-out infinite; }
+  @keyframes cta-ring {
+    0% { box-shadow: 0 0 0 0 rgba(26, 169, 238, .7), 0 6px 14px rgba(0, 0, 0, .3); }
+    70%, 100% { box-shadow: 0 0 0 14px rgba(26, 169, 238, 0), 0 6px 14px rgba(0, 0, 0, .3); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint svg, .tabbar__cta.has-items .tabbar__icon { animation: none; }
+}
+@media (max-width: 760px) {
+  .hero { padding-block: 1.5rem 3rem; }
+  .hero__logo { width: min(210px, 56vw); margin-bottom: 1rem; }
+  .scroll-hint { padding: .4rem 1rem .25rem; font-size: .85rem; }
+}
+@media (max-width: 760px) {
+  .hero__actions .btn--ghost { display: none; }
+}
