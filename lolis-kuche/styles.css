@@ -19,7 +19,7 @@
 
   --radius: 10px;
   --shadow: 0 8px 24px rgba(11, 42, 87, .10);
-  --bar-h: 64px;
+  --bar-h: 78px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -91,8 +91,8 @@ h1, h2, h3, h4 { font-family: var(--font-title); font-weight: 700; color: var(--
 }
 .topbar { background: var(--navy); }
 .brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--white); }
-.brand__logo { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; }
-.brand__name { font: 700 1.25rem var(--font-title); }
+.brand__logo { width: 64px; height: 64px; object-fit: contain; border-radius: 10px; }
+.brand__name { font: 700 1.45rem var(--font-title); }
 .topbar__inner { gap: 1.2rem; }
 .brand { margin-right: auto; }
 .topbar__nav { display: flex; align-items: center; gap: 1.6rem; }
@@ -400,7 +400,7 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
   .steps { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 480px) {
-  .brand__name { font-size: 1.05rem; }
+  .brand__name { font-size: 1.2rem; }
   .cta-extra { display: none; }
   .topbar .btn--cta { padding: .6em .9em; }
   .contact { grid-template-columns: minmax(0, 1fr); }
@@ -581,3 +581,9 @@ body.has-host-badge .scroll-hint { bottom: 76px; }
 .item--unavailable .item__photo--empty span { color: var(--navy); font-size: 1rem; }
 .item--unavailable .item__price { color: var(--muted); }
 .qty__btn:disabled { opacity: .35; cursor: not-allowed; background: var(--white); color: var(--blue); }
+
+/* Logo del menú superior en el celular */
+@media (max-width: 760px) {
+  :root { --bar-h: 70px; }
+  .brand__logo { width: 56px; height: 56px; }
+}
