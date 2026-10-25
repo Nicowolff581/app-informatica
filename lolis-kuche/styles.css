@@ -225,7 +225,7 @@ h1, h2, h3, h4 { font-family: var(--font-title); font-weight: 700; color: var(--
 
 .menu-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 1rem; }
 .item {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "info price" "info qty";
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "photo photo" "info price" "info qty";
   gap: .4rem 1rem; align-items: center;
   padding: 1.1rem 1.2rem;
   background: var(--white); border-radius: var(--radius);
@@ -404,7 +404,7 @@ a.contact__card:hover { border-top-color: var(--sky); box-shadow: var(--shadow);
   .cta-extra { display: none; }
   .topbar .btn--cta { padding: .6em .9em; }
   .contact { grid-template-columns: minmax(0, 1fr); }
-  .item { grid-template-columns: minmax(0, 1fr); grid-template-areas: "info" "price" "qty"; }
+  .item { grid-template-columns: minmax(0, 1fr); grid-template-areas: "photo" "info" "price" "qty"; }
   .item__price { text-align: left; }
   .qty { justify-self: start; }
 }
@@ -554,3 +554,20 @@ body.has-host-badge .scroll-hint { bottom: 76px; }
   body.has-host-badge .toast { bottom: calc(136px + env(safe-area-inset-bottom, 0px)); }
   body.has-host-badge .scroll-hint { bottom: calc(142px + env(safe-area-inset-bottom, 0px)); }
 }
+
+/* Fotos de las salchichas en el menú */
+.item { overflow: hidden; align-content: start; }
+.item__photo {
+  grid-area: photo;
+  width: calc(100% + 2.4rem); max-width: none; margin: -1.1rem -1.2rem .5rem;
+  aspect-ratio: 4 / 3; object-fit: cover;
+  background: var(--pale);
+}
+.item__photo--empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cpath d='M10 1 19 10 10 19 1 10Z' fill='%23E2F0FB'/%3E%3Cpath d='M30 1 39 10 30 19 21 10Z' fill='%23cfe5f7'/%3E%3C/svg%3E") 0 0 / 40px 20px,
+    var(--white);
+  color: var(--muted); font: 600 .9rem var(--font-title);
+}
+.item.is-picked .item__photo { filter: saturate(1.08); }
