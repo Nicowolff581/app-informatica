@@ -571,3 +571,13 @@ body.has-host-badge .scroll-hint { bottom: 76px; }
   color: var(--muted); font: 600 .9rem var(--font-title);
 }
 .item.is-picked .item__photo { filter: saturate(1.08); }
+
+/* Salchicha no disponible */
+.soldout {
+  display: inline-block; margin-left: .4em; padding: .15em .6em; vertical-align: middle;
+  border-radius: 999px; background: var(--navy); color: var(--white);
+  font: 600 .72rem var(--font-title); letter-spacing: .02em;
+}
+.item--unavailable .item__photo--empty span { color: var(--navy); font-size: 1rem; }
+.item--unavailable .item__price { color: var(--muted); }
+.qty__btn:disabled { opacity: .35; cursor: not-allowed; background: var(--white); color: var(--blue); }
