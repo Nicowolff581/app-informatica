@@ -39,7 +39,7 @@ Abre `lolis-kuche/index.html` en el navegador.
 - Título, descripción, Open Graph (`og-image.jpg`) y datos estructurados `FoodEstablishment`
   con menú, precios y zona de entrega (Bogotá) en `index.html`.
 - `canonical`, `og:url`, el JSON-LD y `sitemap.xml` usan
-  `https://loliskuche.netlify.app/`. Si la página se publica en otra
+  `https://loliskuche.pages.dev/`. Si la página se publica en otra
   dirección (por ejemplo un dominio propio), cambia esa dirección en esos lugares.
 - Después de publicarla: envía `sitemap.xml` en Google Search Console y crea el perfil de
   Google Business Profile como negocio con zona de servicio en Bogotá.

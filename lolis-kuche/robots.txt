@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://loliskuche.netlify.app/sitemap.xml
+Sitemap: https://loliskuche.pages.dev/sitemap.xml
