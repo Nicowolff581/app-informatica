@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nonna Rosa · Cucina Italiana</title>
+  <meta name="description" content="Nonna Rosa, trattoria italiana: pasta fresca, pizza y postres hechos a mano, como antes. Reserva tu mesa.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ NAVEGACIÓN ============ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="#inicio" class="logo" aria-label="Nonna Rosa, inicio">
+        <span class="logo__seal">NR</span>
+        <span class="logo__text">
+          <span class="logo__name">Nonna Rosa</span>
+          <span class="logo__sub">Cucina Italiana</span>
+        </span>
+      </a>
+
+      <button class="nav__toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav__menu" id="navMenu" aria-label="Principal">
+        <a href="#carta">Carta</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#galeria">Galería</a>
+        <a href="#contacto">Contacto</a>
+        <a href="#reservar" class="btn btn--primary btn--sm">Reservar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="inicio">
+      <div class="hero__overlay"></div>
+      <div class="hero__content container">
+        <p class="script hero__script">Benvenuti</p>
+        <h1 class="hero__title">Cocina italiana<br>hecha a mano</h1>
+        <p class="hero__lead"><em>Dove ogni piatto racconta una storia.</em><br>Donde cada plato cuenta una historia.</p>
+        <div class="hero__actions">
+          <a href="#carta" class="btn btn--light">Ver la carta</a>
+          <a href="#reservar" class="btn btn--primary">Reservar mesa</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NUESTRA HISTORIA ============ -->
+    <section class="section story" id="nosotros">
+      <div class="container story__grid">
+        <figure class="story__photo">
+          <img src="https://images.unsplash.com/photo-1681270543584-8e541a1bb056?auto=format&fit=crop&w=900&h=1100&q=80&fm=webp"
+               alt="Chef preparando comida en la cocina" width="900" height="1100" loading="lazy">
+        </figure>
+        <div class="story__text">
+          <p class="eyebrow">Nuestra historia</p>
+          <h2 class="section__title">Fatto a mano, come una volta</h2>
+          <p>Todo empezó en la cocina de la nonna Rosa, entre harina, tomates maduros y domingos de mesa larga. Hoy seguimos sus recetas al pie de la letra: amasamos la pasta cada mañana, dejamos que el ragú se cocine a fuego lento y horneamos el pan antes de que llegues.</p>
+          <p>Aquí no hay prisa. Hay vino, sobremesa y platos para compartir, porque <em>a tavola non s'invecchia</em>: en la mesa no se envejece.</p>
+          <ul class="story__facts">
+            <li><strong>Pasta fresca</strong><span>amasada cada día</span></li>
+            <li><strong>Horno de leña</strong><span>para nuestras pizzas</span></li>
+            <li><strong>Pan de bienvenida</strong><span>con aceite de oliva</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PLATOS DESTACADOS ============ -->
+    <section class="section section--cream featured">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Della casa</p>
+          <h2 class="section__title">Platos destacados</h2>
+        </header>
+        <div class="featured__grid">
+          <article class="dish-card">
+            <img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?auto=format&fit=crop&w=800&h=600&q=80&fm=webp"
+                 alt="Tenedor enrollando spaghetti" width="800" height="600" loading="lazy">
+            <div class="dish-card__body">
+              <h3>Spaghetti alla carbonara</h3>
+              <p>Guanciale, yema de huevo, pecorino y pimienta negra.</p>
+            </div>
+          </article>
+          <article class="dish-card">
+            <img src="https://images.unsplash.com/photo-1598023696416-0193a0bcd302?auto=format&fit=crop&w=800&h=600&q=80&fm=webp"
+                 alt="Pizza con hojas verdes y salsa roja" width="800" height="600" loading="lazy">
+            <div class="dish-card__body">
+              <h3>Pizza Margherita</h3>
+              <p>Tomate, mozzarella y albahaca, en horno de leña.</p>
+            </div>
+          </article>
+          <article class="dish-card">
+            <img src="https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?auto=format&fit=crop&w=800&h=600&q=80&fm=webp"
+                 alt="Pasta servida en bowl blanco" width="800" height="600" loading="lazy">
+            <div class="dish-card__body">
+              <h3>Tagliatelle al ragù</h3>
+              <p>Pasta fresca con ragú de res cocinado a fuego lento.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CARTA ============ -->
+    <section class="section menu" id="carta">
+      <div class="container container--narrow">
+        <header class="section__head">
+          <p class="eyebrow">La carta</p>
+          <h2 class="section__title">Mangia bene</h2>
+        </header>
+
+        <div class="menu__tabs" role="tablist" aria-label="Secciones de la carta">
+          <button class="menu__tab is-active" role="tab" aria-selected="true" aria-controls="tab-antipasti" id="t-antipasti">Antipasti</button>
+          <button class="menu__tab" role="tab" aria-selected="false" aria-controls="tab-primi" id="t-primi" tabindex="-1">Primi</button>
+          <button class="menu__tab" role="tab" aria-selected="false" aria-controls="tab-pizze" id="t-pizze" tabindex="-1">Pizze</button>
+          <button class="menu__tab" role="tab" aria-selected="false" aria-controls="tab-secondi" id="t-secondi" tabindex="-1">Secondi</button>
+          <button class="menu__tab" role="tab" aria-selected="false" aria-controls="tab-dolci" id="t-dolci" tabindex="-1">Dolci</button>
+        </div>
+
+        <div class="menu__panel" role="tabpanel" id="tab-antipasti" aria-labelledby="t-antipasti">
+          <h3 class="menu__heading">Antipasti</h3>
+          <ul class="menu__list">
+            <li class="menu__item">
+              <h4>Bruschetta al pomodoro</h4>
+              <p>Pan tostado, tomate fresco, albahaca y aceite de oliva <span class="price">18</span></p>
+            </li>
+            <li class="menu__item">
+              <h4>Burrata e prosciutto</h4>
+              <p>Burrata cremosa, jamón curado y rúgula <span class="price">32</span></p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu__panel" role="tabpanel" id="tab-primi" aria-labelledby="t-primi" hidden>
+          <h3 class="menu__heading">Primi</h3>
+          <ul class="menu__list">
+            <li class="menu__item">
+              <h4>Spaghetti alla carbonara</h4>
+              <p>Guanciale, yema de huevo, pecorino y pimienta negra <span class="price">34</span></p>
+            </li>
+            <li class="menu__item">
+              <h4>Tagliatelle al ragù</h4>
+              <p>Pasta fresca con ragú de res cocinado a fuego lento <span class="price">36</span></p>
+            </li>
+            <li class="menu__item">
+              <h4>Risotto ai funghi</h4>
+              <p>Arroz cremoso con champiñones y parmesano <span class="price">38</span></p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu__panel" role="tabpanel" id="tab-pizze" aria-labelledby="t-pizze" hidden>
+          <h3 class="menu__heading">Pizze</h3>
+          <ul class="menu__list">
+            <li class="menu__item">
+              <h4>Margherita</h4>
+              <p>Tomate, mozzarella y albahaca <span class="price">28</span></p>
+            </li>
+            <li class="menu__item">
+              <h4>Diavola</h4>
+              <p>Tomate, mozzarella y salami picante <span class="price">32</span></p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu__panel" role="tabpanel" id="tab-secondi" aria-labelledby="t-secondi" hidden>
+          <h3 class="menu__heading">Secondi</h3>
+          <ul class="menu__list">
+            <li class="menu__item">
+              <h4>Pollo alla cacciatora</h4>
+              <p>Pollo guisado con tomate, aceitunas y romero <span class="price">42</span></p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="menu__panel" role="tabpanel" id="tab-dolci" aria-labelledby="t-dolci" hidden>
+          <h3 class="menu__heading">Dolci</h3>
+          <ul class="menu__list">
+            <li class="menu__item menu__item--special">
+              <h4>Tiramisù della casa <span class="star" aria-label="Especialidad de la casa">✦</span></h4>
+              <p>Café, mascarpone y cacao <span class="price">18</span></p>
+            </li>
+            <li class="menu__item">
+              <h4>Panna cotta ai frutti rossi</h4>
+              <p>Crema cocida con salsa de frutos rojos <span class="price">16</span></p>
+            </li>
+          </ul>
+        </div>
+
+        <details class="glossary">
+          <summary>Mini glosario</summary>
+          <dl>
+            <div><dt>Al dente</dt><dd>Pasta cocida en su punto: firme al morder.</dd></div>
+            <div><dt>Guanciale</dt><dd>Cachete de cerdo curado, el alma de la carbonara.</dd></div>
+            <div><dt>Burrata</dt><dd>Queso fresco de mozzarella con centro de crema.</dd></div>
+            <div><dt>Pecorino</dt><dd>Queso curado de leche de oveja.</dd></div>
+          </dl>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ GALERÍA ============ -->
+    <section class="section section--dark gallery" id="galeria">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow eyebrow--light">Galería</p>
+          <h2 class="section__title">A tavola con noi</h2>
+        </header>
+        <div class="gallery__grid">
+          <img src="https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Salón cálido con mesas de madera" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1724232860199-ca42e61ddb43?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Grupo de personas comiendo pizza" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1536392706976-e486e2ba97af?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Mesa larga con flores y velas" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1715494534168-2ce3196e6d67?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Aceite de oliva cayendo sobre una pizza" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1538333581680-29dd4752ddf2?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Salón con luces cálidas encendidas" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1581954548218-415cd6ee5f4d?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Hombre sosteniendo pan recién hecho" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1532117472055-4d0734b51f31?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Copas de vino y comida sobre la mesa" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1498579150354-977475b7ea0b?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Pasta cruda y tomates cherry" loading="lazy" width="800" height="600">
+          <img src="https://images.unsplash.com/photo-1761517394803-aab6df3f9095?auto=format&fit=crop&w=800&h=600&q=80&fm=webp" alt="Entrada del restaurante con toldo rojo y mesas afuera" loading="lazy" width="800" height="600">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESEÑAS ============ -->
+    <!-- Reseñas de ejemplo: reemplazar por reseñas reales de Google / TripAdvisor -->
+    <section class="section section--cream reviews">
+      <div class="container">
+        <header class="section__head">
+          <p class="eyebrow">Lo que dicen</p>
+          <h2 class="section__title">Reseñas</h2>
+        </header>
+        <div class="reviews__grid">
+          <blockquote class="review">
+            <p class="review__stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            <p>“La carbonara más auténtica que he probado fuera de Roma. Y el pan de bienvenida… volvería solo por eso.”</p>
+            <footer>Cliente de ejemplo · Google</footer>
+          </blockquote>
+          <blockquote class="review">
+            <p class="review__stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            <p>“Ambiente cálido, música italiana y un tiramisú espectacular. Perfecto para ir en familia.”</p>
+            <footer>Cliente de ejemplo · TripAdvisor</footer>
+          </blockquote>
+          <blockquote class="review">
+            <p class="review__stars" aria-label="4 de 5 estrellas">★★★★☆</p>
+            <p>“Se nota que la pasta es fresca. Nos regalaron limoncello al final: detalle que enamora.”</p>
+            <footer>Cliente de ejemplo · Google</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESERVAR ============ -->
+    <section class="section reserve" id="reservar">
+      <div class="container reserve__grid">
+        <div class="reserve__text">
+          <p class="eyebrow">Reservas</p>
+          <h2 class="section__title">Reserva tu mesa</h2>
+          <p>Déjanos tus datos y te confirmamos por WhatsApp. Para grupos de más de 8 personas, escríbenos directamente: juntamos las mesas, como en Italia.</p>
+          <p class="script reserve__script">Ti aspettiamo!</p>
+        </div>
+        <form class="reserve__form" id="reserveForm" novalidate>
+          <div class="field">
+            <label for="name">Nombre</label>
+            <input id="name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="date">Fecha</label>
+              <input id="date" name="date" type="date" required>
+            </div>
+            <div class="field">
+              <label for="time">Hora</label>
+              <select id="time" name="time" required>
+                <option value="">Elige</option>
+                <option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option>
+                <option>19:00</option><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="guests">Personas</label>
+              <select id="guests" name="guests" required>
+                <option>1</option><option selected>2</option><option>3</option><option>4</option>
+                <option>5</option><option>6</option><option>7</option><option>8</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="notes">Comentarios <span class="optional">(opcional)</span></label>
+            <textarea id="notes" name="notes" rows="3" placeholder="Cumpleaños, alergias, terraza…"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block">Reservar por WhatsApp</button>
+          <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ CONTACTO / PIE ============ -->
+  <!-- Datos de contacto de ejemplo: reemplazar por los reales -->
+  <footer class="footer" id="contacto">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a href="#inicio" class="logo logo--light">
+          <span class="logo__seal">NR</span>
+          <span class="logo__text">
+            <span class="logo__name">Nonna Rosa</span>
+            <span class="logo__sub">Cucina Italiana</span>
+          </span>
+        </a>
+        <p class="footer__motto"><em>Mangia bene, ridi spesso, ama molto.</em></p>
+      </div>
+
+      <div>
+        <h3>Horario</h3>
+        <ul class="hours">
+          <li><span>Lunes</span><span>Cerrado</span></li>
+          <li><span>Mar – Jue</span><span>12:00 – 22:00</span></li>
+          <li><span>Vie – Sáb</span><span>12:00 – 23:30</span></li>
+          <li><span>Domingo</span><span>12:00 – 17:00</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <address>
+          Calle de la Trattoria 123<br>
+          Tu ciudad<br>
+          <a href="tel:+570000000000">+57 000 000 0000</a><br>
+          <a href="mailto:hola@nonnarosa.com">hola@nonnarosa.com</a>
+        </address>
+        <div class="social">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v2H8v4h2v6h4v-6h3l1-4h-4V8z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer__map">
+        <iframe title="Mapa de ubicación de Nonna Rosa"
+                src="https://www.google.com/maps?q=restaurante%20italiano&output=embed"
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+
+    <div class="footer__bottom container">
+      <p>© <span id="year">2026</span> Nonna Rosa · Fotos de <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a></p>
+    </div>
+  </footer>
+
+  <!-- ============ WHATSAPP FLOTANTE ============ -->
+  <a class="whatsapp" id="whatsappBtn" href="https://wa.me/570000000000?text=Hola%2C%20quisiera%20reservar%20una%20mesa" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.6.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>
+  </a>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
